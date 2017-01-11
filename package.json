@@ -1,0 +1,46 @@
+{
+  "name": "multi-encryptor",
+  "version": "0.0.1",
+  "description": "Interactive tool for creating simple ciphers.",
+  "main": "index.html",
+  "author": "Lukas Trumm",
+  "license": "MIT",
+  "dependencies": {
+    "angular": "^1.6.1",
+    "angular-animate": "^1.6.1",
+    "angular-aria": "^1.6.1",
+    "angular-material": "^1.1.1",
+    "angular-messages": "^1.6.1",
+    "string": "^3.3.3"
+  },
+  "devDependencies": {
+    "browser-sync": "latest",
+    "npm-run-all": "latest",
+    "onchange": "latest",
+    "shx": "latest"
+  },
+  "config": {
+    "source": "app",
+    "distribution": "dist"
+  },
+  "scripts": {
+    "clean": "shx rm -rf dist/*",
+    "postclean": "shx mkdir -p dist/css dist/js dist/img",
+    "app:css": "shx cat app/css/*.css > dist/css/app.css",
+    "vendor:css": "shx cp -r app/css/vendor dist/css",
+    "build:css": "run-p app:css vendor:css",
+    "app:js": "shx cat app/js/*.js > dist/js/app.js",
+    "vendor:js": "shx cp -r app/js/vendor dist/js",
+    "build:js": "run-p app:js vendor:js",
+    "build:img": "shx cp -r app/img dist",
+    "build:html": "shx cp app/*.html dist",
+    "build": "npm run clean && run-p build:css build:js build:img build:html",
+    "serve": "browser-sync start -s dist -f dist -b chrome --port 4000 --no-notify",
+    "watch:css": "onchange app/css -- npm run build:css",
+    "watch:js": "onchange app/js -- npm run build:js",
+    "watch:img": "onchange app/img -- npm run build:img",
+    "watch:html": "onchange app/*.html -- npm run build:html",
+    "watch": "run-p watch:css watch:js watch:img watch:html serve",
+    "start": "npm run build && npm run watch"
+  }
+}

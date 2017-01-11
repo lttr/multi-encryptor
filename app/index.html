@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en" ng-app="encrypter">
+  <head>
+    <meta charset="utf-8">
+    <meta name="description" content="Interactive tool for creating simple ciphers.">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Multi encrypter</title>
+    <link rel="stylesheet" href="css/vendor/angular-material.min.css">
+    <link rel="stylesheet" href="css/app.css">
+  </head>
+
+  <body ng-controller="EncrypterController as vm">
+
+    <md-toolbar>
+      <h1>Multi encrypter</h1>
+    </md-toolbar>
+
+    <div>
+      <md-content id="content">
+        <md-input-container>
+          <md-subheader>Input Text</md-subheader>
+          <!-- <label class="section-name">Input text</label> -->
+          <textarea name="inputTextArea" id="inputTextArea" rows="2"
+            ng-model="vm.input" md-maxlength="10">
+          </textarea>
+          <div ng-message="md-maxlength">That's too long!</div>
+
+        </md-input-container>
+
+          <section id="options">
+            <h3>Options</h3>
+          </section>
+
+          <section id="outputs">
+            <h3>Outputs</h3>
+            <div class="cipher" ng-repeat="cipher in vm.getOutputs()">
+              <label for="{{cipher.cipherName}}">
+                {{cipher.cipherName}}
+              </label>
+              <pre id="{{cipher.cipherName}}">{{cipher.output}}</pre>
+            </div>
+          </section>
+
+
+      </md-content>
+    </div>
+
+    <script type="text/javascript" src="js/vendor/angular.min.js"></script>
+    <script type="text/javascript" src="js/vendor/angular-messages.min.js"></script>
+    <script type="text/javascript" src="js/vendor/angular-animate.min.js"></script>
+    <script type="text/javascript" src="js/vendor/angular-aria.min.js"></script>
+    <script type="text/javascript" src="js/vendor/angular-material.min.js"></script>
+    <script type="text/javascript" src="js/vendor/string.min.js"></script>
+    <script type="text/javascript" src="js/app.js"></script>
+  </body>
+</html>
