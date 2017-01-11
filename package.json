@@ -32,7 +32,7 @@
     "app:js": "shx cat app/js/*.js > dist/js/app.js",
     "vendor:js": "shx cp -r app/js/vendor dist/js",
     "build:js": "run-p app:js vendor:js",
-    "build:img": "shx cp -r app/img dist",
+    "build:img": "shx mkdir -p app/img && shx cp -r app/img dist",
     "build:html": "shx cp app/*.html dist",
     "build": "npm run clean && run-p build:css build:js build:img build:html",
     "serve": "browser-sync start -s dist -f dist -b chrome --port 4000 --no-notify",

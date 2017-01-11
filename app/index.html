@@ -12,27 +12,44 @@
 
   <body ng-controller="EncrypterController as vm">
 
-    <md-toolbar>
-      <h1>Multi encrypter</h1>
+    <md-toolbar layout="row" layout-align="center">
+      <h1 class="md-display-1">Multi encrypter</h1>
     </md-toolbar>
 
-    <div>
-      <md-content id="content">
-        <md-input-container>
-          <md-subheader>Input Text</md-subheader>
-          <!-- <label class="section-name">Input text</label> -->
-          <textarea name="inputTextArea" id="inputTextArea" rows="2"
-            ng-model="vm.input" md-maxlength="10">
-          </textarea>
-          <div ng-message="md-maxlength">That's too long!</div>
+    <div id="content" layout="row">
 
-        </md-input-container>
+      <md-sidenav id="settings" class="md-whiteframe-4dp" md-component-id="settingsOnSide">
+        <md-subheader>Settings</md-subheader>
+      </md-sidenav>
 
-          <section id="options">
-            <h3>Options</h3>
-          </section>
+      <div id="ciphersWrapper" flex layout="column">
 
-          <section id="outputs">
+        <section id="inputTextWrapper" class="flexContent" layout="row" layout-align="center">
+          <div flex="70">
+            <form name="inputForm">
+              <md-input-container layout-fill>
+                <h3>Input Text</h3>
+                <textarea name="inputTextArea" id="inputTextArea" rows="2" aria-label="Input text"
+                  ng-model="vm.input" required max-rows="7" md-maxlength="200" maxlength="201">
+                </textarea>
+                <div ng-messages="inputForm.inputTextArea.$error" >
+                  <div ng-message="required">Type some text.</div>
+                  <div ng-message="md-maxlength">That is too long!</div>
+                </div>
+              </md-input-container>
+            </form>
+          </div>
+        </section>
+
+        <section id="availableCiphers" class="flexContent" layout="row" layout-align="center">
+          <div flex="70">
+            <h3>Available ciphers</h3>
+            <md-button ng-click="openSettingsOnSide()">Open settings on side</md-button>
+          </div>
+        </section>
+
+        <section id="outputs" class="flexContent" layout="row" layout-align="center">
+          <div flex="70" style="overflow: hidden;">
             <h3>Outputs</h3>
             <div class="cipher" ng-repeat="cipher in vm.getOutputs()">
               <label for="{{cipher.cipherName}}">
@@ -40,10 +57,12 @@
               </label>
               <pre id="{{cipher.cipherName}}">{{cipher.output}}</pre>
             </div>
-          </section>
+          </div>
+        </section>
 
 
-      </md-content>
+      </div>
+
     </div>
 
     <script type="text/javascript" src="js/vendor/angular.min.js"></script>

@@ -1,10 +1,17 @@
 'use strict';
 
-function EncrypterController() {
+function EncrypterController($scope, $mdSidenav) {
+  $scope.openSettingsOnSide = function() {
+    $mdSidenav('settingsOnSide').toggle();
+  };
+
   this.input = 'Příliš žluťoučký\tkůň\npěl ďábelské ódy!';
 
   this.getOutputs = function() {
     var thisInput = this.input;
+    if (!thisInput) {
+      thisInput = '';
+    }
     var outputs = [];
     Ciphers.forEach(function(cipher) {
       cipher.output = cipher.cipherFunction(thisInput)
@@ -15,7 +22,7 @@ function EncrypterController() {
 }
 
 angular
-  .module('encrypter', ['ngMaterial'])
+  .module('encrypter', ['ngMessages','ngMaterial'])
   .controller('EncrypterController', EncrypterController)
   .config(function($mdThemingProvider, $mdIconProvider) {
     $mdThemingProvider
