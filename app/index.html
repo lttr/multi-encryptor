@@ -6,6 +6,8 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Multi encrypter</title>
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons"
+          rel="stylesheet">
     <link rel="stylesheet" href="css/vendor/angular-material.min.css">
     <link rel="stylesheet" href="css/app.css">
   </head>
@@ -18,19 +20,23 @@
 
     <div id="content" layout="row">
 
-      <md-sidenav id="settings" class="md-whiteframe-4dp" md-component-id="settingsOnSide">
+      <md-sidenav id="settings" class="md-whiteframe-4dp"
+                  md-component-id="settingsOnSide">
         <md-subheader>Settings</md-subheader>
       </md-sidenav>
 
       <div id="ciphersWrapper" flex layout="column">
 
-        <section id="inputTextWrapper" class="flexContent" layout="row" layout-align="center">
+        <section id="inputTextWrapper" class="flexContent"
+                 layout="row" layout-align="center">
           <div flex="70">
             <form name="inputForm">
               <md-input-container layout-fill>
                 <h3>Input Text</h3>
-                <textarea name="inputTextArea" id="inputTextArea" rows="2" aria-label="Input text"
-                  ng-model="vm.input" required max-rows="7" md-maxlength="200" maxlength="201">
+                <textarea name="inputTextArea" id="inputTextArea"
+                          rows="2" aria-label="Input text"
+                          ng-model="vm.input" required max-rows="7"
+                          md-maxlength="200" maxlength="201">
                 </textarea>
                 <div ng-messages="inputForm.inputTextArea.$error" >
                   <div ng-message="required">Type some text.</div>
@@ -41,10 +47,50 @@
           </div>
         </section>
 
-        <section id="availableCiphers" class="flexContent" layout="row" layout-align="center">
+        <section id="availableCiphers" class="flexContent"
+                 layout="row" layout-align="center">
           <div flex="70">
             <h3>Available ciphers</h3>
+            <md-chips ng-model="vm.ciphers" readonly="true">
+								<md-chip-template>
+									<strong>{{$chip.cipherName}}</strong>
+								</md-chip-template>
+            </md-chips>
             <md-button ng-click="openSettingsOnSide()">Open settings on side</md-button>
+          </div>
+        </section>
+
+        <section id="chosenCiphers" class="flexContent"
+                 layout="row" layout-align="center">
+          <div flex="70">
+            <h3>Chosen ciphers</h3>
+						<form name="fruitForm" ng-submit="$event.preventDefault()">
+							<md-chips ng-model="vm.chosenCiphers"
+                        md-autocomplete-snap
+                        md-require-match="true"
+                        md-max-chips="5"
+                        md-removable="false">
+                <md-autocomplete
+                        md-selected-item="vm.selectedCipher"
+                        md-search-text="vm.searchText"
+                        md-items="cipher in vm.querySearch(vm.searchText)"
+                        md-item-text="cipher.cipherName"
+                        md-autoselect="true"
+                        placeholder="write cipher name" >
+                  <span md-highlight-text="vm.searchText">{{cipher.cipherName}}</span>
+                </md-autocomplete>
+								<md-chip-template>
+									<strong>{{$chip.cipherName}}</strong>
+                  <button class="button-chip" ng-click="openSettingsOnSide()"
+                          md-colors="::{color: 'default-accent-700'}">
+                    <md-icon class="material-icons">settings</md-icon>
+                  </button>
+                  <button class="button-chip" md-chip-remove
+                          md-colors="::{color: 'default-warn'}">
+                    <md-icon class="material-icons">close</md-icon>
+                  </button>
+								</md-chip-template>
+							</md-chips>
           </div>
         </section>
 
@@ -65,12 +111,12 @@
 
     </div>
 
-    <script type="text/javascript" src="js/vendor/angular.min.js"></script>
-    <script type="text/javascript" src="js/vendor/angular-messages.min.js"></script>
-    <script type="text/javascript" src="js/vendor/angular-animate.min.js"></script>
-    <script type="text/javascript" src="js/vendor/angular-aria.min.js"></script>
-    <script type="text/javascript" src="js/vendor/angular-material.min.js"></script>
-    <script type="text/javascript" src="js/vendor/string.min.js"></script>
-    <script type="text/javascript" src="js/app.js"></script>
+    <script src="js/vendor/angular.min.js"></script>
+    <script src="js/vendor/angular-messages.min.js"></script>
+    <script src="js/vendor/angular-animate.min.js"></script>
+    <script src="js/vendor/angular-aria.min.js"></script>
+    <script src="js/vendor/angular-material.min.js"></script>
+    <script src="js/vendor/string.min.js"></script>
+    <script src="js/app.js"></script>
   </body>
 </html>

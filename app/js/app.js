@@ -1,19 +1,53 @@
 'use strict';
 
+angular
+  .module('encrypter', ['ngMessages','ngMaterial'])
+  .controller('EncrypterController', EncrypterController)
+  .config(function($mdThemingProvider) {
+    $mdThemingProvider
+      .theme('default')
+      .primaryPalette('brown')
+      .accentPalette('amber')
+      .warnPalette('deep-orange');
+  });
+
 function EncrypterController($scope, $mdSidenav) {
+  var self = this;
+
+	self.ciphers = Ciphers;
+  self.input = 'P.říliš žluťoučký\tkůň\npěl ďábelské ódy!';
+	self.chosenCiphers = [Morse];
+	self.searchText = null;
+	self.selectedCipher = null;
+
+  self.querySearch = querySearch;
+  self.createFilterFor = createFilterFor;
+  self.getOutputs = getOutputs;
+
   $scope.openSettingsOnSide = function() {
     $mdSidenav('settingsOnSide').toggle();
   };
 
-  this.input = 'Příliš žluťoučký\tkůň\npěl ďábelské ódy!';
 
-  this.getOutputs = function() {
-    var thisInput = this.input;
+  function querySearch(query) {
+    var results = query ? self.ciphers.filter(createFilterFor(query)) : [];
+    return results;
+  }
+
+  function createFilterFor(query) {
+    var lowercaseQuery = angular.lowercase(query);
+    return function filterFn(item) {
+      return (angular.lowercase(item.cipherName).indexOf(lowercaseQuery) === 0);
+    };
+  }
+
+  function getOutputs() {
+    var thisInput = self.input;
     if (!thisInput) {
       thisInput = '';
     }
     var outputs = [];
-    Ciphers.forEach(function(cipher) {
+    self.chosenCiphers.forEach(function(cipher) {
       cipher.output = cipher.cipherFunction(thisInput)
       outputs.push(cipher);
     });
@@ -21,15 +55,6 @@ function EncrypterController($scope, $mdSidenav) {
   };
 }
 
-angular
-  .module('encrypter', ['ngMessages','ngMaterial'])
-  .controller('EncrypterController', EncrypterController)
-  .config(function($mdThemingProvider, $mdIconProvider) {
-    $mdThemingProvider
-      .theme('default')
-      .primaryPalette('brown')
-      .accentPalette('red');
-  });
 
 
 //
@@ -146,16 +171,27 @@ var MorseHash = {
   v: '...-', w: '.--', x: '-..-', y: '-.--', z: '--..'
 }
 function morse(input) {
-  var cleanInput = removeDiacritics(removePunctuation(input));
-  var array = cleanInput.trim()
+  var charactersPerLine = 20;
+  var cleanInput = removeDiacritics(input);
+  cleanInput = cleanInput.trim()
                         .toLocaleLowerCase()
                         .replace(/\s+/g,' ')
-                        .split('');
+                        .replace(/[.!?]+/g,'||')
+  var array = removePunctuation(cleanInput).split('');
   var outputArray = [];
   for (var i = 0, l = array.length; i < l; i++) {
-    outputArray[i] = MorseHash[array[i]];
+    var morseChar = MorseHash[array[i]];
+    if (i % charactersPerLine === 0) {
+      outputArray[i] = '\n' + morseChar
+    } else {
+      outputArray[i] = morseChar;
+    }
   }
-  return outputArray.join('|') + '|||';
+  var endOfSentence = '';
+  if (outputArray.length > 1) {
+    endOfSentence = '||';
+  }
+  return outputArray.join('|') + endOfSentence;
 }
 var Morse = {
   cipherName: 'Morse',
