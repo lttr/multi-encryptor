@@ -24,9 +24,9 @@
   margin: 10px;
 }
 
-.pipe-card .action-button {
-  min-height: 24px;
-  height: 24px;
+.pipe-card .actions {
+  position: relative;
+  top: -8px;
 }
 .pipe-card md-card md-card-actions {
   margin: 0;
