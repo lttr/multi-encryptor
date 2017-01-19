@@ -56,58 +56,85 @@
 									<strong>{{$chip.cipherName}}</strong>
 								</md-chip-template>
             </md-chips>
-            <md-button ng-click="openSettingsOnSide()">Open settings on side</md-button>
           </div>
         </section>
 
-        <section id="chosenCiphers" class="flexContent"
+        <section id="chosen-ciphers" class="flexContent"
                  layout="row" layout-align="center">
           <div flex="70">
             <h3>Chosen ciphers</h3>
-						<form name="fruitForm" ng-submit="$event.preventDefault()">
-							<md-chips ng-model="vm.chosenCiphers"
-                        md-autocomplete-snap
-                        md-require-match="true"
-                        md-max-chips="5"
-                        md-removable="false">
-                <md-autocomplete
-                        md-selected-item="vm.selectedCipher"
-                        md-search-text="vm.searchText"
-                        md-items="cipher in vm.querySearch(vm.searchText)"
-                        md-item-text="cipher.cipherName"
-                        md-autoselect="true"
-                        placeholder="write cipher name" >
-                  <span md-highlight-text="vm.searchText">{{cipher.cipherName}}</span>
-                </md-autocomplete>
-								<md-chip-template>
-									<strong>{{$chip.cipherName}}</strong>
-                  <button class="button-chip" ng-click="openSettingsOnSide()"
-                          md-colors="::{color: 'default-accent-700'}">
-                    <md-icon class="material-icons">settings</md-icon>
-                  </button>
-                  <button class="button-chip" md-chip-remove
-                          md-colors="::{color: 'default-warn'}">
-                    <md-icon class="material-icons">close</md-icon>
-                  </button>
-								</md-chip-template>
-							</md-chips>
+            <md-content class="pipe-card" ng-repeat="pipe in vm.pipes">
+              <md-card>
+                <md-card-header layout="row">
+                  <md-card-header-text>
+                    <span class="md-title">{{pipe.getName()}}</span>
+                  </md-card-header-text>
+                  <md-card-actions layout-align="start">
+                    <md-card-icon-actions layout-align="end">
+                      <md-button class="md-icon-button md-primary action-button"
+                                ng-click="vm.removePipe(pipe)"
+                                aria-label="Remove pipe" title="Remove pipe">
+                        <md-icon class="material-icons">remove_circle</md-icon>
+                      </md-button>
+                    </md-card-icon-actions>
+                  </md-card-actions>
+                </md-card-header>
+                <md-card-content>
+                  <md-chips layout-fill
+                    ng-model="pipe.chosenCiphers"
+                            md-autocomplete-snap
+                            md-require-match="true"
+                            md-max-chips="5"
+                            md-removable="false">
+                    <md-autocomplete
+                            md-selected-item="pipe.selectedCipher"
+                            md-search-text="pipe.searchText"
+                            md-items="cipher in vm.querySearch(pipe.searchText)"
+                            md-item-text="cipher.cipherName"
+                            md-autoselect="true"
+                            placeholder="write cipher name" >
+                      <span md-highlight-text="pipe.searchText">{{cipher.cipherName}}</span>
+                    </md-autocomplete>
+                    <md-chip-template>
+                      <strong>{{$chip.cipherName}}</strong>
+                      <button class="button-chip" ng-click="vm.openSettingsOnSide()"
+                              md-colors="::{color: 'default-accent-700'}">
+                        <md-icon class="material-icons">settings</md-icon>
+                      </button>
+                      <button class="button-chip" md-chip-remove
+                              md-colors="::{color: 'default-warn'}">
+                        <md-icon class="material-icons">close</md-icon>
+                      </button>
+                    </md-chip-template>
+                  </md-chips>
+                </md-card-content>
+            </md-content>
+            <div class="right-button-wrapper">
+              <md-button class="md-fab md-primary md-mini" ng-click="vm.addPipe()"
+                          aria-label="Add pipe" title="Add pipe">
+                <md-icon class="material-icons">add</md-icon>
+              </md-button>
+            </div>
           </div>
         </section>
 
         <section id="outputs" class="flexContent" layout="row" layout-align="center">
           <div flex="70" style="overflow: hidden;">
             <h3>Outputs</h3>
-            <div class="cipher" ng-repeat="cipher in vm.getOutputs()">
-              <label for="{{cipher.cipherName}}">
-                {{cipher.cipherName}}
-              </label>
-              <pre id="{{cipher.cipherName}}">{{cipher.output}}</pre>
-            </div>
+            <md-content ng-repeat="pipe in vm.pipes">
+              <md-card>
+                <md-card-header>
+                  <md-card-header-text>
+                    <span class="md-title">{{pipe.getName()}}</span>
+                  </md-card-title-text>
+                </md-card-header>
+                <md-card-content>
+                  <pre class="output">{{vm.getOutput(pipe)}}</pre>
+                </md-card-content>
+              </md-card>
+            </md-content>
           </div>
         </section>
-
-
-      </div>
 
     </div>
 

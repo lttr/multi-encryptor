@@ -1,7 +1,7 @@
 'use strict';
 
 angular
-  .module('encrypter', ['ngMessages','ngMaterial'])
+  .module('encrypter', ['ngMessages', 'ngMaterial'])
   .controller('EncrypterController', EncrypterController)
   .config(function($mdThemingProvider) {
     $mdThemingProvider
@@ -11,23 +11,46 @@ angular
       .warnPalette('deep-orange');
   });
 
+var Pipe = function(number, ciphers) {
+  this.number = number || 1;
+  this.chosenCiphers = ciphers;
+  this.searchText = null;
+  this.selectedCipher = null;
+  this.getName = function() {
+    return 'Pipe ' + this.number;
+  };
+}
+
 function EncrypterController($scope, $mdSidenav) {
   var self = this;
 
 	self.ciphers = Ciphers;
   self.input = 'P.říliš žluťoučký\tkůň\npěl ďábelské ódy!';
-	self.chosenCiphers = [Morse];
-	self.searchText = null;
-	self.selectedCipher = null;
+
+  var defaultPipe = new Pipe(1, [Morse]);
+  var defaultPipe2 = new Pipe(1, [Morse]);
+  self.pipes = [defaultPipe, defaultPipe2];
 
   self.querySearch = querySearch;
   self.createFilterFor = createFilterFor;
-  self.getOutputs = getOutputs;
+  self.addPipe = addPipe;
+  self.removePipe = removePipe;
+  self.getOutput = getOutput;
 
-  $scope.openSettingsOnSide = function() {
+  self.openSettingsOnSide = function() {
     $mdSidenav('settingsOnSide').toggle();
   };
 
+  function addPipe() {
+    var number = self.pipes.length + 1;
+    var pipe = new Pipe(number, []);
+    self.pipes.push(pipe);
+  }
+
+  function removePipe(pipe) {
+    var index = self.pipes.indexOf(pipe);
+    self.pipes.splice(index, 1);
+  }
 
   function querySearch(query) {
     var results = query ? self.ciphers.filter(createFilterFor(query)) : [];
@@ -41,17 +64,16 @@ function EncrypterController($scope, $mdSidenav) {
     };
   }
 
-  function getOutputs() {
+  function getOutput(pipe) {
     var thisInput = self.input;
     if (!thisInput) {
       thisInput = '';
     }
-    var outputs = [];
-    self.chosenCiphers.forEach(function(cipher) {
-      cipher.output = cipher.cipherFunction(thisInput)
-      outputs.push(cipher);
-    });
-    return outputs;
+    var result = pipe.chosenCiphers.reduce(
+      function(output, cipher) {
+        return cipher.cipherFunction(output);
+    }, thisInput);
+    return result;
   };
 }
 
@@ -168,30 +190,39 @@ var MorseHash = {
   a: '.-', b: '-...', c: '-.-.', d: '-..', e: '.', f: '..-.', g: '--.',
   h: '....', i: '..', j: '.---', k: '-.-', l: '.-..', m: '--', n: '-.',
   o: '---', p: '.--.', q: '--.-', r: '.-.', s: '...', t: '-', u: '..-',
-  v: '...-', w: '.--', x: '-..-', y: '-.--', z: '--..'
+  v: '...-', w: '.--', x: '-..-', y: '-.--', z: '--..',
+  ' ': '',
+  '.': '|',
+  '?': '|',
+  '!': '|'
 }
 function morse(input) {
-  var charactersPerLine = 20;
+  var charactersPerLine = 70;
   var cleanInput = removeDiacritics(input);
   cleanInput = cleanInput.trim()
                         .toLocaleLowerCase()
-                        .replace(/\s+/g,' ')
-                        .replace(/[.!?]+/g,'||')
-  var array = removePunctuation(cleanInput).split('');
-  var outputArray = [];
-  for (var i = 0, l = array.length; i < l; i++) {
-    var morseChar = MorseHash[array[i]];
-    if (i % charactersPerLine === 0) {
-      outputArray[i] = '\n' + morseChar
-    } else {
-      outputArray[i] = morseChar;
+                        .replace(/\s+/g,' ');
+  var inputArray = cleanInput.split('');
+  var morseArray = [];
+  inputArray.forEach(function(character, index) {
+    var morseChar = MorseHash[character] || '';
+    morseArray[index] = morseChar + '|';
+  });
+  var outputArray = morseArray.join('').split('');
+  var possibleLineBreakIndex = 0;
+  var currentLineLength = 0;
+  for(var i = 1; i < outputArray.length; i++) {
+    currentLineLength++;
+    if (outputArray[i] !== '|' && outputArray[i-1] === '|') {
+      possibleLineBreakIndex = i;
+    }
+    if (currentLineLength >= charactersPerLine) {
+      outputArray.splice(possibleLineBreakIndex, 0, '\n');
+      i = possibleLineBreakIndex + 1;
+      currentLineLength = 0;
     }
   }
-  var endOfSentence = '';
-  if (outputArray.length > 1) {
-    endOfSentence = '||';
-  }
-  return outputArray.join('|') + endOfSentence;
+  return outputArray.join('');
 }
 var Morse = {
   cipherName: 'Morse',
