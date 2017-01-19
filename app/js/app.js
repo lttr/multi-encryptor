@@ -1,7 +1,12 @@
 'use strict';
 
 angular
-  .module('encrypter', ['ngMessages', 'ngMaterial', 'ngAnimate'])
+  .module('encrypter', [
+    'ngMessages',
+    'ngMaterial',
+    'ngAnimate',
+    'pascalprecht.translate'
+  ])
   .controller('EncrypterController', EncrypterController)
   .config(function($mdThemingProvider) {
     $mdThemingProvider
@@ -9,6 +14,21 @@ angular
       .primaryPalette('brown')
       .accentPalette('amber')
       .warnPalette('deep-orange');
+  })
+  .config(function($translateProvider) {
+    $translateProvider
+      .translations('en', {
+        multiEncryptor: 'Multi encrypter'
+      })
+      .translations('cs', {
+        multiEncryptor: 'Multi šifrovač'
+      });
+    $translateProvider.determinePreferredLanguage();
+    $translateProvider.useStaticFilesLoader({
+        prefix: '/js/lang/',
+        suffix: '.json'
+      });
+    $translateProvider.useLocalStorage();
   });
 
 var Pipe = function(number, ciphers) {
@@ -21,7 +41,7 @@ var Pipe = function(number, ciphers) {
   };
 }
 
-function EncrypterController($scope, $mdSidenav) {
+function EncrypterController($scope, $mdSidenav, $translate) {
   var self = this;
 
 	self.ciphers = Ciphers;
@@ -30,6 +50,8 @@ function EncrypterController($scope, $mdSidenav) {
   var defaultPipe = new Pipe(1, [Morse]);
   var defaultPipe2 = new Pipe(1, [Morse]);
   self.pipes = [defaultPipe, defaultPipe2];
+
+  self.changeLanguage = changeLanguage;
 
   self.querySearch = querySearch;
   self.createFilterFor = createFilterFor;
@@ -40,6 +62,10 @@ function EncrypterController($scope, $mdSidenav) {
   self.openSettingsOnSide = function() {
     $mdSidenav('settingsOnSide').toggle();
   };
+
+  function changeLanguage(langKey) {
+    $translate.use(langKey)
+  }
 
   function addPipe() {
     var number = self.pipes.length + 1;
