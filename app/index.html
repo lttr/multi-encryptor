@@ -65,7 +65,7 @@
                  layout="row" layout-align="center">
           <div flex="70">
             <h3>Chosen ciphers</h3>
-            <md-content class="pipe-card" ng-repeat="pipe in vm.pipes">
+            <md-content class="pipe-card show-hide" ng-repeat="pipe in vm.pipes">
               <md-card>
                 <md-card-header layout="row">
                   <md-card-header-text>
@@ -110,6 +110,7 @@
                     </md-chip-template>
                   </md-chips>
                 </md-card-content>
+              </md-card>
             </md-content>
             <div class="right-button-wrapper">
               <md-button class="md-fab md-primary md-mini" ng-click="vm.addPipe()"
@@ -123,7 +124,7 @@
         <section id="outputs" class="flexContent" layout="row" layout-align="center">
           <div flex="70" style="overflow: hidden;">
             <h3>Outputs</h3>
-            <md-content ng-repeat="pipe in vm.pipes">
+            <md-content class="pipe-card show-hide" ng-repeat="pipe in vm.pipes">
               <md-card>
                 <md-card-header>
                   <md-card-header-text>

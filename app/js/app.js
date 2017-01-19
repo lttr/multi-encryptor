@@ -1,7 +1,7 @@
 'use strict';
 
 angular
-  .module('encrypter', ['ngMessages', 'ngMaterial'])
+  .module('encrypter', ['ngMessages', 'ngMaterial', 'ngAnimate'])
   .controller('EncrypterController', EncrypterController)
   .config(function($mdThemingProvider) {
     $mdThemingProvider
