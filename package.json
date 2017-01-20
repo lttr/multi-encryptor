@@ -12,7 +12,8 @@
     "angular-material": "^1.1.1",
     "angular-messages": "^1.6.1",
     "angular-translate": "^2.13.1",
-    "string": "^3.3.3"
+    "string": "^3.3.3",
+    "v-accordion": "^1.6.0"
   },
   "devDependencies": {
     "browser-sync": "latest",
@@ -32,7 +33,7 @@
     "app:css": "shx cat app/css/*.css | cleancss -o dist/css/style.min.css",
     "vendor:css": "shx cp -r app/css/vendor dist/css",
     "build:css": "run-p app:css vendor:css",
-    "app:js": "shx cat app/js/*.js > dist/js/app.js",
+    "app:js": "shx cat app/js/*.js app/js/ciphers/*.js > dist/js/app.js",
     "vendor:js": "shx cp -r app/js/vendor dist/js",
     "build:js": "run-p app:js vendor:js",
     "build:img": "shx mkdir -p app/img && shx cp -r app/img dist",
