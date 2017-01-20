@@ -3,8 +3,8 @@ var Pipe = function(number, ciphers) {
   this.chosenCiphers = ciphers;
   this.searchText = null;
   this.selectedCipher = null;
-  this.getName = function() {
-    return 'Pipe ' + this.number;
+  this.getNumber = function() {
+    return this.number;
   };
 }
 

@@ -5,7 +5,7 @@
     <meta name="description" content="Interactive tool for creating simple ciphers.">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Multi encrypter</title>
+    <title>{{'multiEncryptor' | translate}}</title>
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons"
           rel="stylesheet">
     <link rel="stylesheet" href="css/vendor/angular-material.min.css">
@@ -17,6 +17,7 @@
 
   <body ng-controller="EncrypterController as vm">
 
+    <!-- Header -->
     <md-toolbar layout="row" layout-align="space-between">
       <span></span>
       <h1 class="md-display-1">
@@ -24,7 +25,9 @@
       </h1>
       <md-fab-speed-dial md-direction="left" md-open="false" class="md-scale">
         <md-fab-trigger>
-          <md-button class="md-icon-button" md-aria-label="change language">
+          <md-button class="md-icon-button"
+                     md-aria-label="{{'changeLanguage' | translate}}"
+                     title="{{'changeLanguage' | translate}}">
             <md-icon class="material-icons">language</md-icon>
           </md-button>
         </md-fab-trigger>
@@ -39,8 +42,9 @@
           </md-button>
         </md-fab-actions>
       </md-fab-speed-dial>
-    </md-toolbar>
+    </md-toolbar> <!-- /Header -->
 
+    <!-- Content -->
     <div id="content" layout="row">
 
       <md-sidenav id="settings" class="md-whiteframe-4dp"
@@ -48,56 +52,62 @@
         <md-subheader>Settings</md-subheader>
       </md-sidenav>
 
-      <div id="ciphersWrapper" flex layout="column">
+      <!-- Ciphers wrapper -->
+      <div id="ciphers-wrapper" flex layout="column">
 
-        <section id="inputTextWrapper" class="flexContent"
+        <!-- Available ciphers -->
+        <section id="available-ciphers" class="flexContent"
                  layout="row" layout-align="center">
           <div flex="70">
-            <form name="inputForm">
-              <md-input-container layout-fill>
-                <h3>Input Text</h3>
-                <textarea name="inputTextArea" id="inputTextArea"
-                          rows="2" aria-label="Input text"
-                          ng-model="vm.input" required max-rows="7"
-                          md-maxlength="200" maxlength="201">
-                </textarea>
-                <div ng-messages="inputForm.inputTextArea.$error" >
-                  <div ng-message="required">Type some text.</div>
-                  <div ng-message="md-maxlength">That is too long!</div>
-                </div>
-              </md-input-container>
-            </form>
+            <h3>{{'availableCiphers' | translate}}</h3>
+            <v-accordion multiple class="vccordion--default">
+              <v-pane expanded>
+                <v-pane-header>
+                  Ciphers A
+                </v-pane-header>
+                <v-pane-content>
+                  <md-chips ng-model="vm.ciphers" readonly="true">
+                    <md-chip-template>
+                      <strong>{{$chip.cipherName | translate}}</strong>
+                    </md-chip-template>
+                  </md-chips>
+                </v-pane-content>
+              </v-pane expanded>
+              <v-pane>
+                <v-pane-header>
+                  Ciphers B
+                </v-pane-header>
+                <v-pane-content>
+                  <md-chips ng-model="vm.ciphers" readonly="true">
+                    <md-chip-template>
+                      <strong>{{$chip.cipherName | translate}}</strong>
+                    </md-chip-template>
+                  </md-chips>
+                </v-pane-content>
+              </v-pane>
+            </v-accordion>
           </div>
-        </section>
+        </section><!-- /Available ciphers -->
 
-        <section id="availableCiphers" class="flexContent"
-                 layout="row" layout-align="center">
-          <div flex="70">
-            <h3>Available ciphers</h3>
-            <md-chips ng-model="vm.ciphers" readonly="true">
-								<md-chip-template>
-									<strong>{{$chip.cipherName}}</strong>
-								</md-chip-template>
-            </md-chips>
-          </div>
-        </section>
-
+        <!-- Chosen ciphers -->
         <section id="chosen-ciphers" class="flexContent"
                  layout="row" layout-align="center">
           <div flex="70">
-            <h3>Chosen ciphers</h3>
-            <md-content class="pipe-card show-hide" ng-repeat="pipe in vm.pipes">
-              <md-card>
+            <h3>{{'chosenCiphers' | translate}}</h3>
+            <md-content class="show-hide" ng-repeat="pipe in vm.pipes">
+              <md-card class="pipe-card">
                 <md-card-header layout="row">
                   <md-card-header-text>
-                    <span class="md-title">{{pipe.getName()}}</span>
+                  <span class="md-title">
+                    {{'pipe' | translate}} {{pipe.getNumber()}}
+                  </span>
                   </md-card-header-text>
                   <md-card-actions layout-align="start">
                     <md-card-icon-actions layout-align="end" class="actions">
                       <md-button class="md-icon-button md-primary"
                                 ng-click="vm.removePipe(pipe)"
                                 aria-label="Remove pipe" title="Remove pipe">
-                        <md-icon class="material-icons">remove_circle</md-icon>
+                        <md-icon class="material-icons">delete</md-icon>
                       </md-button>
                     </md-card-icon-actions>
                   </md-card-actions>
@@ -115,11 +125,13 @@
                             md-items="cipher in vm.querySearch(pipe.searchText)"
                             md-item-text="cipher.cipherName"
                             md-autoselect="true"
-                            placeholder="write cipher name" >
-                      <span md-highlight-text="pipe.searchText">{{cipher.cipherName}}</span>
+                            placeholder="{{'infoWriteCipherName' | translate}}" >
+                            <span md-highlight-text="pipe.searchText">
+                              {{cipher.cipherName | translate}}
+                            </span>
                     </md-autocomplete>
                     <md-chip-template>
-                      <strong>{{$chip.cipherName}}</strong>
+                      <strong>{{$chip.cipherName | translate}}</strong>
                       <button class="button-chip" ng-click="vm.openSettingsOnSide()"
                               md-colors="::{color: 'default-accent-700'}">
                         <md-icon class="material-icons">settings</md-icon>
@@ -140,16 +152,40 @@
               </md-button>
             </div>
           </div>
-        </section>
+        </section><!-- /Chosen ciphers -->
 
+        <!-- Input text -->
+        <section id="input-text-wrapper" class="flexContent"
+                 layout="row" layout-align="center">
+          <div flex="70">
+            <h3>{{'inputText' | translate}}</h3>
+            <md-card>
+              <md-card-content>
+                <md-input-container layout-fill>
+                  <form name="inputForm">
+                    <textarea id="inputTextArea" rows="2"
+                              aria-label="{{'inputText' | translate}}"
+                              ng-model="vm.input" required max-rows="7"
+                              md-maxlength="200" maxlength="201">
+                    </textarea>
+                  </form>
+                </md-input-container>
+              </md-card-content>
+            </md-card>
+          </div>
+        </section><!-- /Input text -->
+
+        <!-- Outputs -->
         <section id="outputs" class="flexContent" layout="row" layout-align="center">
           <div flex="70" style="overflow: hidden;">
-            <h3>Outputs</h3>
+            <h3>{{'outputs' | translate}}</h3>
             <md-content class="pipe-card show-hide" ng-repeat="pipe in vm.pipes">
               <md-card>
                 <md-card-header>
                   <md-card-header-text>
-                    <span class="md-title">{{pipe.getName()}}</span>
+                  <span class="md-title">
+                    {{'pipe' | translate}} {{pipe.getNumber()}}
+                  </span>
                   </md-card-title-text>
                 </md-card-header>
                 <md-card-content>
@@ -158,9 +194,11 @@
               </md-card>
             </md-content>
           </div>
-        </section>
+        </section> <!-- /Outputs -->
 
-    </div>
+      </div> <!-- /Ciphers wrapper -->
+
+    </div> <!-- /Content -->
 
     <script src="js/vendor/angular.min.js"></script>
     <script src="js/vendor/angular-messages.min.js"></script>

@@ -1,11 +1,11 @@
-function EncrypterController($scope, $mdSidenav, $translate) {
+var EncrypterController = function($scope, $mdSidenav, $translate) {
   var self = this;
 
 	self.ciphers = Ciphers;
   self.input = 'P.říliš žluťoučký\tkůň\npěl ďábelské ódy!';
 
   var defaultPipe = new Pipe(1, [Morse]);
-  var defaultPipe2 = new Pipe(1, [Morse]);
+  var defaultPipe2 = new Pipe(2, [Morse]);
   self.pipes = [defaultPipe, defaultPipe2];
 
   self.changeLanguage = changeLanguage;
@@ -59,6 +59,5 @@ function EncrypterController($scope, $mdSidenav, $translate) {
     return result;
   };
 }
-
 
 var Ciphers = [];
