@@ -17,18 +17,10 @@ angular
   })
   .config(function($translateProvider) {
     $translateProvider
-      .translations('en', {
-        multiEncryptor: 'Multi encrypter'
-      })
-      .translations('cs', {
-        multiEncryptor: 'Multi šifrovač'
-      });
-    $translateProvider.determinePreferredLanguage();
-    $translateProvider.useStaticFilesLoader({
-        prefix: '/js/lang/',
-        suffix: '.json'
-      });
-    $translateProvider.useLocalStorage();
+      .translations('en', enLang)
+      .translations('cs', csLang)
+      .determinePreferredLanguage()
+      .useSanitizeValueStrategy('escape');
   });
 
 var Pipe = function(number, ciphers) {
