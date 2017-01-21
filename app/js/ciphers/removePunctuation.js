@@ -6,5 +6,5 @@ var RemovePunctuation = {
   cipherName: 'RemovePunctuation',
   cipherFunction: removePunctuation
 }
-Ciphers.push(RemovePunctuation);
+CiphersList.push(RemovePunctuation);
 

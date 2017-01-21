@@ -6,5 +6,5 @@ var RemoveWhitespace = {
   cipherName: 'RemoveWhitespace',
   cipherFunction: removeWhitespace
 }
-Ciphers.push(RemoveWhitespace)
+CiphersList.push(RemoveWhitespace)
 

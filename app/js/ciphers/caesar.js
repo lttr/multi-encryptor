@@ -17,5 +17,5 @@ var Caesar = {
   cipherName: 'Caesar',
   cipherFunction: caesar
 }
-Ciphers.push(Caesar);
+CiphersList.push(Caesar);
 

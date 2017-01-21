@@ -17,6 +17,6 @@ var Shift = {
   cipherName: 'Shift',
   cipherFunction: shift
 }
-Ciphers.push(Shift);
+CiphersList.push(Shift);
 
 

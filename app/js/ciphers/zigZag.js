@@ -16,5 +16,5 @@ var ZigZag = {
   cipherName: 'ZigZag',
   cipherFunction: zigZag
 }
-Ciphers.push(ZigZag);
+CiphersList.push(ZigZag);
 

@@ -15,7 +15,7 @@
     <!-- endbuild -->
   </head>
 
-  <body ng-controller="EncrypterController as vm">
+  <body ng-controller="EncrypterController as vm" ng-cloak>
 
     <!-- Header -->
     <md-toolbar layout="row" layout-align="space-between">
@@ -60,27 +60,15 @@
                  layout="row" layout-align="center">
           <div flex="70">
             <h3>{{'availableCiphers' | translate}}</h3>
-            <v-accordion multiple class="vccordion--default">
-              <v-pane expanded>
-                <v-pane-header>
-                  Ciphers A
+            <v-accordion multiple class="accordion">
+              <v-pane expanded="$first" ng-repeat="category in vm.categories">
+                <v-pane-header class="accordion-header">
+                  {{category.name | translate}}
                 </v-pane-header>
-                <v-pane-content>
-                  <md-chips ng-model="vm.ciphers" readonly="true">
+                <v-pane-content class="accordion-content">
+                  <md-chips ng-model="category.ciphers" readonly="true">
                     <md-chip-template>
-                      <strong>{{$chip.cipherName | translate}}</strong>
-                    </md-chip-template>
-                  </md-chips>
-                </v-pane-content>
-              </v-pane expanded>
-              <v-pane>
-                <v-pane-header>
-                  Ciphers B
-                </v-pane-header>
-                <v-pane-content>
-                  <md-chips ng-model="vm.ciphers" readonly="true">
-                    <md-chip-template>
-                      <strong>{{$chip.cipherName | translate}}</strong>
+                      {{$chip.cipherName | translate}}
                     </md-chip-template>
                   </md-chips>
                 </v-pane-content>
@@ -131,7 +119,7 @@
                             </span>
                     </md-autocomplete>
                     <md-chip-template>
-                      <strong>{{$chip.cipherName | translate}}</strong>
+                      {{$chip.cipherName | translate}}
                       <button class="button-chip" ng-click="vm.openSettingsOnSide()"
                               md-colors="::{color: 'default-accent-700'}">
                         <md-icon class="material-icons">settings</md-icon>

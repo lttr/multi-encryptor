@@ -6,5 +6,5 @@ var Reverse = {
   cipherName: 'Reverse',
   cipherFunction: reverse
 }
-Ciphers.push(Reverse);
+CiphersList.push(Reverse);
 

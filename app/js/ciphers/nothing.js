@@ -6,5 +6,5 @@ var Nothing = {
   cipherName: 'Nothing',
   cipherFunction: nothing
 }
-Ciphers.push(Nothing);
+CiphersList.push(Nothing);
 

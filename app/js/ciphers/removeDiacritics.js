@@ -6,5 +6,5 @@ var RemoveDiacritics = {
   cipherName: 'RemoveDiacritics',
   cipherFunction: removeDiacritics
 }
-Ciphers.push(RemoveDiacritics);
+CiphersList.push(RemoveDiacritics);
 

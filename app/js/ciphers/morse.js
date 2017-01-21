@@ -39,7 +39,23 @@ function morse(input) {
 }
 var Morse = {
   cipherName: 'Morse',
-  cipherFunction: morse
+  cipherFunction: morse,
+  category: Categories.SUBSTITUTION
 }
-Ciphers.push(Morse);
+CiphersList.push(Morse);
 
+
+// var Morse = function() {
+//   this.id = 'morse';
+//   this.name = 'Morse';
+//   this.description = 'Morse alphabet';
+//   this.category = Categories.S;
+//   this.config = {
+//     char: '-'
+//   };
+//   this.encrypt = function(text) {
+//     text = Utils.reverse(text);
+//     char = this.config.char;
+//     return text.replace(/./g, char);
+//   }
+// }

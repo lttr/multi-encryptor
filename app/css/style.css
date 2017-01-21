@@ -70,3 +70,19 @@
   opacity: 0;
 }
 
+.accordion .accordion-header {
+  padding: 5px;
+  font-weight: bold;
+  transition: all 0.05s linear;
+}
+
+.accordion .accordion-header:hover {
+  background-color: rgb(121,85,72);
+  color: rgba(255,255,255,0.87);
+  transition: all 0.05s linear;
+}
+
+.accordion .accordion-content {
+  padding: 5px;
+}
+

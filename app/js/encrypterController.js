@@ -1,8 +1,9 @@
 var EncrypterController = function($scope, $mdSidenav, $translate) {
   var self = this;
 
-	self.ciphers = Ciphers;
-  self.input = 'P.říliš žluťoučký\tkůň\npěl ďábelské ódy!';
+	self.ciphersList = CiphersList;
+	self.categories = getCategorizedCiphers();
+  self.input = 'P.řílirgš žluťoučký\tkůň\npěl ďábelské ódy!';
 
   var defaultPipe = new Pipe(1, [Morse]);
   var defaultPipe2 = new Pipe(2, [Morse]);
@@ -20,6 +21,20 @@ var EncrypterController = function($scope, $mdSidenav, $translate) {
     $mdSidenav('settingsOnSide').toggle();
   };
 
+  function getCategorizedCiphers() {
+    var categorizedCiphers = [];
+    Object.keys(Categories).forEach(function(categoryKey) {
+      var oneCategory = {
+        name: Categories[categoryKey]
+      };
+      oneCategory.ciphers = CiphersList.filter(function(cipher) {
+        return Categories[categoryKey] === cipher.category;
+      });
+      categorizedCiphers.push(oneCategory);
+    });
+    return categorizedCiphers;
+  }
+
   function changeLanguage(langKey) {
     $translate.use(langKey)
   }
@@ -36,7 +51,7 @@ var EncrypterController = function($scope, $mdSidenav, $translate) {
   }
 
   function querySearch(query) {
-    var results = query ? self.ciphers.filter(createFilterFor(query)) : [];
+    var results = query ? self.ciphersList.filter(createFilterFor(query)) : [];
     return results;
   }
 
@@ -60,4 +75,3 @@ var EncrypterController = function($scope, $mdSidenav, $translate) {
   };
 }
 
-var Ciphers = [];
