@@ -1,24 +1,24 @@
+var Morse = function() {
+  this.config = {
+    enabled: true,
+    charactersPerLine: 70,
+    removeDiacritics: true,
+    normalizeWhitespace: true
+  };
+};
 
-var MorseHash = {
-  a: '.-', b: '-...', c: '-.-.', d: '-..', e: '.', f: '..-.', g: '--.',
-  h: '....', i: '..', j: '.---', k: '-.-', l: '.-..', m: '--', n: '-.',
-  o: '---', p: '.--.', q: '--.-', r: '.-.', s: '...', t: '-', u: '..-',
-  v: '...-', w: '.--', x: '-..-', y: '-.--', z: '--..',
-  ' ': '',
-  '.': '|',
-  '?': '|',
-  '!': '|'
-}
-function morse(input) {
-  var charactersPerLine = 70;
-  var cleanInput = removeDiacritics(input);
-  cleanInput = cleanInput.trim()
-                        .toLocaleLowerCase()
-                        .replace(/\s+/g,' ');
-  var inputArray = cleanInput.split('');
+Morse.prototype.name = 'morse';
+Morse.prototype.description = 'morseDesc';
+Morse.prototype.category = Categories.SUBSTITUTION;
+
+Morse.prototype.encrypt = function(input) {
+  input = Utils.removeDiacritics(input);
+  input = Utils.normalizeWhitespace(input);
+  input = Utils.lowercase(input);
+  var inputArray = input.split('');
   var morseArray = [];
   inputArray.forEach(function(character, index) {
-    var morseChar = MorseHash[character] || '';
+    var morseChar = Morse.morseHash[character] || '';
     morseArray[index] = morseChar + '|';
   });
   var outputArray = morseArray.join('').split('');
@@ -29,33 +29,24 @@ function morse(input) {
     if (outputArray[i] !== '|' && outputArray[i-1] === '|') {
       possibleLineBreakIndex = i;
     }
-    if (currentLineLength >= charactersPerLine) {
+    if (currentLineLength >= this.config.charactersPerLine) {
       outputArray.splice(possibleLineBreakIndex, 0, '\n');
       i = possibleLineBreakIndex + 1;
       currentLineLength = 0;
     }
   }
   return outputArray.join('');
-}
-var Morse = {
-  cipherName: 'Morse',
-  cipherFunction: morse,
-  category: Categories.SUBSTITUTION
-}
+};
+
+Morse.morseHash = Object.freeze({
+  a: '.-', b: '-...', c: '-.-.', d: '-..', e: '.', f: '..-.', g: '--.',
+  h: '....', i: '..', j: '.---', k: '-.-', l: '.-..', m: '--', n: '-.',
+  o: '---', p: '.--.', q: '--.-', r: '.-.', s: '...', t: '-', u: '..-',
+  v: '...-', w: '.--', x: '-..-', y: '-.--', z: '--..',
+  ' ': '',
+  '.': '|',
+  '?': '|',
+  '!': '|'
+});
+
 CiphersList.push(Morse);
-
-
-// var Morse = function() {
-//   this.id = 'morse';
-//   this.name = 'Morse';
-//   this.description = 'Morse alphabet';
-//   this.category = Categories.S;
-//   this.config = {
-//     char: '-'
-//   };
-//   this.encrypt = function(text) {
-//     text = Utils.reverse(text);
-//     char = this.config.char;
-//     return text.replace(/./g, char);
-//   }
-// }

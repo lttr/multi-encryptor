@@ -1,10 +1,13 @@
+var RemoveDiacritics = function() {
+  this.config = {};
+}
 
-function removeDiacritics(input) {
-  return S(input).latinise().s;
+RemoveDiacritics.prototype.name = 'removeDiacritics';
+RemoveDiacritics.prototype.description = 'removeDiacriticsDesc';
+RemoveDiacritics.prototype.category = Categories.UNIVERSAL;
+
+RemoveDiacritics.prototype.encrypt = function(input) {
+  return Utils.removeDiacritics(input);
 }
-var RemoveDiacritics = {
-  cipherName: 'RemoveDiacritics',
-  cipherFunction: removeDiacritics
-}
+
 CiphersList.push(RemoveDiacritics);
-

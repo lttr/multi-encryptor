@@ -1,10 +1,14 @@
+var Reverse = function() {
+  this.config = {};
+}
 
-function reverse(input) {
-  return input.split('').reverse().join('');
+Reverse.prototype.name = 'reverse';
+Reverse.prototype.description = 'reverseDesc';
+Reverse.prototype.category = Categories.TRANSPOSITION;
+
+Reverse.prototype.encrypt = function(input) {
+  return Utils.reverse(input);
 }
-var Reverse = {
-  cipherName: 'Reverse',
-  cipherFunction: reverse
-}
+
 CiphersList.push(Reverse);
 

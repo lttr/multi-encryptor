@@ -1,10 +1,14 @@
+var RemovePunctuation = function() {
+  this.config = {};
+}
 
-function removePunctuation(input) {
-  return S(input).latinise().stripPunctuation().s;
-}
-var RemovePunctuation = {
-  cipherName: 'RemovePunctuation',
-  cipherFunction: removePunctuation
-}
+RemovePunctuation.prototype.name = 'removePunctuation';
+RemovePunctuation.prototype.description = 'removePunctuationDesc';
+RemovePunctuation.prototype.category = Categories.UNIVERSAL;
+
+RemovePunctuation.prototype.encrypt = function(input) {
+  return Utils.removePunctuation(input);
+};
+
 CiphersList.push(RemovePunctuation);
 

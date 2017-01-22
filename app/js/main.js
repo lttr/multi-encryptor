@@ -6,6 +6,7 @@ angular
     'ngMaterial',
     'ngAnimate',
     'vAccordion',
+    'angular-clipboard',
     'pascalprecht.translate'
   ])
   .controller('EncrypterController', EncrypterController)
@@ -22,7 +23,8 @@ angular
       .translations('cs', csLang)
       .determinePreferredLanguage()
       .useSanitizeValueStrategy('escape');
-  });
+  })
+  .config;
 
 
 var Pipe = function(number, ciphers) {
@@ -30,6 +32,9 @@ var Pipe = function(number, ciphers) {
   this.chosenCiphers = ciphers;
   this.searchText = null;
   this.selectedCipher = null;
+  this.addCipher = function(cipher) {
+    this.chosenCiphers.push(cipher);
+  };
   this.getNumber = function() {
     return this.number;
   };

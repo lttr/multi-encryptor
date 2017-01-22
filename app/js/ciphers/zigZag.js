@@ -1,6 +1,13 @@
+var ZigZag = function() {
+  this.config = {};
+}
 
-function zigZag(input) {
-  var array = removeWhitespace(input).split('');
+ZigZag.prototype.name = 'zigZag';
+ZigZag.prototype.description = 'zigZagDesc';
+ZigZag.prototype.category = Categories.TRANSPOSITION;
+
+ZigZag.prototype.encrypt = function(input) {
+  var array = Utils.removeWhitespace(input).split('');
   var firstLine = '';
   var secondLine = '';
   for (var i = 0, l = array.length; i < l; i++) {
@@ -11,10 +18,7 @@ function zigZag(input) {
     }
   }
   return firstLine + '\n' + secondLine;
-}
-var ZigZag = {
-  cipherName: 'ZigZag',
-  cipherFunction: zigZag
-}
+};
+
 CiphersList.push(ZigZag);
 

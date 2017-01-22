@@ -1,25 +1,45 @@
-var EncrypterController = function($scope, $mdSidenav, $translate) {
-  var self = this;
+var EncrypterController = function($mdSidenav, $mdToast, $translate, $filter) {
 
-	self.ciphersList = CiphersList;
-	self.categories = getCategorizedCiphers();
-  self.input = 'P.řílirgš žluťoučký\tkůň\npěl ďábelské ódy!';
+  this.input = $filter('translate')('defaultInputText');
 
-  var defaultPipe = new Pipe(1, [Morse]);
-  var defaultPipe2 = new Pipe(2, [Morse]);
-  self.pipes = [defaultPipe, defaultPipe2];
+	this.ciphersList = CiphersList;
+	this.categories = getCategorizedCiphers();
 
-  self.changeLanguage = changeLanguage;
+  var defaultPipe = new Pipe(1, [new Morse()]);
+  this.pipes = [defaultPipe];
 
-  self.querySearch = querySearch;
-  self.createFilterFor = createFilterFor;
-  self.addPipe = addPipe;
-  self.removePipe = removePipe;
-  self.getOutput = getOutput;
+  this.outputToCopy;
 
-  self.openSettingsOnSide = function() {
+  this.changeLanguage = changeLanguage;
+  this.querySearch = querySearch;
+  this.createFilterFor = createFilterFor;
+  this.addPipe = addPipe;
+  this.removePipe = removePipe;
+  this.useCipher = useCipher;
+  this.getOutput = getOutput;
+  this.informOutputCopied = informOutputCopied;
+  this.openSettingsOnSide = openSettingsOnSide;
+
+  function useCipher(Cipher) {
+    var cipherInstance = new Cipher();
+    if (this.pipes.length == 0) {
+      this.pipes.push(new Pipe(1, [cipherInstance]));
+    } else {
+      this.pipes[0].addCipher(cipherInstance);
+    }
+  };
+
+  function openSettingsOnSide() {
     $mdSidenav('settingsOnSide').toggle();
   };
+
+  function informOutputCopied() {
+    $mdToast.show(
+      $mdToast.simple()
+        .textContent($filter('translate')('infoOutputCopied'))
+        .position('bottom right')
+    );
+  }
 
   function getCategorizedCiphers() {
     var categorizedCiphers = [];
@@ -27,8 +47,8 @@ var EncrypterController = function($scope, $mdSidenav, $translate) {
       var oneCategory = {
         name: Categories[categoryKey]
       };
-      oneCategory.ciphers = CiphersList.filter(function(cipher) {
-        return Categories[categoryKey] === cipher.category;
+      oneCategory.ciphers = CiphersList.filter(function(Cipher) {
+        return Categories[categoryKey] === Cipher.prototype.category;
       });
       categorizedCiphers.push(oneCategory);
     });
@@ -40,37 +60,41 @@ var EncrypterController = function($scope, $mdSidenav, $translate) {
   }
 
   function addPipe() {
-    var number = self.pipes.length + 1;
+    var number = this.pipes.length + 1;
     var pipe = new Pipe(number, []);
-    self.pipes.push(pipe);
+    this.pipes.push(pipe);
   }
 
   function removePipe(pipe) {
-    var index = self.pipes.indexOf(pipe);
-    self.pipes.splice(index, 1);
+    var index = this.pipes.indexOf(pipe);
+    this.pipes.splice(index, 1);
   }
 
   function querySearch(query) {
-    var results = query ? self.ciphersList.filter(createFilterFor(query)) : [];
+    var results = query ? this.ciphersList.filter(createFilterFor(query)) : [];
     return results;
   }
 
   function createFilterFor(query) {
-    var lowercaseQuery = angular.lowercase(query);
+    var lowercaseQuery = query.toLocaleLowerCase();
     return function filterFn(item) {
-      return (angular.lowercase(item.cipherName).indexOf(lowercaseQuery) === 0);
+      var lowerCipherName = $filter('translate')(item.prototype.name)
+                              .toLocaleLowerCase();
+      return (lowerCipherName.indexOf(lowercaseQuery) === 0);
     };
   }
 
   function getOutput(pipe) {
-    var thisInput = self.input;
+    var thisInput = this.input;
     if (!thisInput) {
       thisInput = '';
     }
     var result = pipe.chosenCiphers.reduce(
       function(output, cipher) {
-        return cipher.cipherFunction(output);
+        return cipher.encrypt(output);
     }, thisInput);
+
+    this.outputToCopy = result;
     return result;
   };
 }

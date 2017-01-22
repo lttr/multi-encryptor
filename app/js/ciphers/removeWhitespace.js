@@ -1,10 +1,14 @@
+var RemoveWhitespace = function() {
+  this.config = {};
+}
 
-function removeWhitespace(input) {
-  return input.replace(/\s*/g,'');
+RemoveWhitespace.prototype.name = 'removeWhitespace';
+RemoveWhitespace.prototype.description = 'removeWhitespaceDesc';
+RemoveWhitespace.prototype.category = Categories.UNIVERSAL;
+
+RemoveWhitespace.prototype.encrypt = function(input) {
+  return Utils.removeWhitespace(input);
 }
-var RemoveWhitespace = {
-  cipherName: 'RemoveWhitespace',
-  cipherFunction: removeWhitespace
-}
-CiphersList.push(RemoveWhitespace)
+
+CiphersList.push(RemoveWhitespace);
 
