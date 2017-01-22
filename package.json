@@ -13,6 +13,7 @@
     "angular-material": "^1.1.1",
     "angular-messages": "^1.6.1",
     "angular-translate": "^2.13.1",
+    "angular-ui-router": "^0.4.2",
     "string": "^3.3.3",
     "v-accordion": "^1.6.0"
   },

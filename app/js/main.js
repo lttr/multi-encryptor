@@ -2,12 +2,13 @@
 
 angular
   .module('encrypter', [
-    'ngMessages',
-    'ngMaterial',
-    'ngAnimate',
-    'vAccordion',
     'angular-clipboard',
-    'pascalprecht.translate'
+    'ngAnimate',
+    'ngMaterial',
+    'ngMessages',
+    'pascalprecht.translate',
+    'ui.router',
+    'vAccordion'
   ])
   .controller('EncrypterController', EncrypterController)
   .config(function($mdThemingProvider) {
