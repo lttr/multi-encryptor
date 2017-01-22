@@ -1,4 +1,13 @@
-var EncrypterController = function($mdSidenav, $mdToast, $translate, $filter) {
+var EncrypterController = function(
+  $mdSidenav,
+  $mdToast,
+  $translate,
+  $filter,
+  $state,
+  $stateParams,
+  $scope,
+  $rootScope
+) {
 
   this.input = $filter('translate')('defaultInputText');
 
@@ -27,11 +36,11 @@ var EncrypterController = function($mdSidenav, $mdToast, $translate, $filter) {
     } else {
       this.pipes[0].addCipher(cipherInstance);
     }
-  };
+  }
 
   function openSettingsOnSide() {
     $mdSidenav('settingsOnSide').toggle();
-  };
+  }
 
   function informOutputCopied() {
     $mdToast.show(
@@ -55,8 +64,20 @@ var EncrypterController = function($mdSidenav, $mdToast, $translate, $filter) {
     return categorizedCiphers;
   }
 
+  $scope.$on('$stateChangeSuccess',
+    function rootStateChangeSuccess(event, toState, toParams, fromState, fromParams) {
+      if ($stateParams.lang !== undefined) {
+        var otherLang = $stateParams.lang === 'cs' ? 'en' : 'cs';
+        $rootScope.activeLang = $stateParams.lang;
+        $rootScope.otherLangURL =
+          $location.absUrl().replace('/' + $stateParams.lang, '/' + otherLang)
+        $translate.use($stateParams.lang);
+      }
+    }
+  );
+
   function changeLanguage(langKey) {
-    $translate.use(langKey)
+    $translate.use(langKey);
   }
 
   function addPipe() {

@@ -42,11 +42,13 @@
       </md-fab-trigger>
       <md-fab-actions>
         <md-button class="md-fab md-primary md-mini"
-                    ng-click="vm.changeLanguage('cs')">
+                   ui-sref="cs" ui-sref-active="active"
+                   ng-click="vm.changeLanguage('cs')">
           cs
         </md-button>
         <md-button class="md-fab md-primary md-mini"
-                    ng-click="vm.changeLanguage('en')">
+                   ui-sref="en" ui-sref-active="active"
+                   ng-click="vm.changeLanguage('en')">
           en
         </md-button>
       </md-fab-actions>

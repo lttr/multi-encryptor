@@ -25,7 +25,12 @@ angular
       .determinePreferredLanguage()
       .useSanitizeValueStrategy('escape');
   })
-  .config;
+  .config(function($stateProvider) {
+    $stateProvider.state('encrypter', {
+      abstract: true,
+      url: '/{locale}'
+    });
+  });
 
 
 var Pipe = function(number, ciphers) {
