@@ -14,7 +14,7 @@ var EncrypterController = function(
 	this.ciphersList = CiphersList;
 	this.categories = getCategorizedCiphers();
 
-  var defaultPipe = new Pipe(1, [new Morse()]);
+  var defaultPipe = new Pipe(1, [new ZigZag()]);
   this.pipes = [defaultPipe];
 
   this.outputToCopy;
