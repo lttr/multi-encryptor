@@ -14,4 +14,3 @@ Lowercase.prototype.encrypt = function(input) {
 }
 
 module.export = Lowercase;
-
