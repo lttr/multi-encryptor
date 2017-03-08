@@ -1,4 +1,6 @@
-var Utils = {
+var S = require('string');
+
+module.exports = {
 
   Alphabet: [
     'a', 'b', 'c', 'd', 'e',

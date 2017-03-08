@@ -1,3 +1,6 @@
+var Categories = require('../categories');
+var Utils = require('../utils');
+
 var Uppercase = function() {
   this.config = {};
 }
@@ -10,5 +13,4 @@ Uppercase.prototype.encrypt = function(input) {
   return Utils.uppercase(input);
 }
 
-CiphersList.push(Uppercase);
-
+module.export = Uppercase;

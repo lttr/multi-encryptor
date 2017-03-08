@@ -5,3 +5,4 @@ var Categories = Object.freeze({
   GRAPHICAL: 'graphicalCiphers'
 });
 
+module.exports = Categories;

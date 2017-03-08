@@ -1,3 +1,6 @@
+var Categories = require('../categories');
+var Utils = require('../utils');
+
 var RemoveDiacritics = function() {
   this.config = {};
 }
@@ -10,4 +13,4 @@ RemoveDiacritics.prototype.encrypt = function(input) {
   return Utils.removeDiacritics(input);
 }
 
-CiphersList.push(RemoveDiacritics);
+module.exports = RemoveDiacritics;

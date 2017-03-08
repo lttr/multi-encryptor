@@ -1,3 +1,6 @@
+var Categories = require('../categories');
+var Utils = require('../utils');
+
 var Caesar = function() {
   this.config = {
     enabled: true,
@@ -28,5 +31,4 @@ Caesar.prototype.encrypt = function(input) {
   return outputArray.join('');
 }
 
-CiphersList.push(Caesar);
-
+module.exports = Caesar;

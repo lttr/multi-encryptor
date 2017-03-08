@@ -1,3 +1,7 @@
+var Categories = require('../categories');
+var Utils = require('../utils');
+
+
 var Morse = function() {
   this.config = {
     enabled: true,
@@ -49,4 +53,4 @@ Morse.morseHash = Object.freeze({
   '!': '|'
 });
 
-CiphersList.push(Morse);
+module.exports = Morse;

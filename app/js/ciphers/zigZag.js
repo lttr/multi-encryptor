@@ -1,3 +1,6 @@
+var Categories = require('../categories');
+var Utils = require('../utils');
+
 var ZigZag = function() {
   this.config = {
     start: 'top',
@@ -18,8 +21,6 @@ ZigZag.prototype.encrypt = function(input) {
   for (var i = 0; i < outputArray.length; i++) {
     outputArray[i] = new Array(columns);
   }
-  console.log(outputArray);
-
 
   var firstLine = '';
   var secondLine = '';
@@ -39,5 +40,4 @@ ZigZag.prototype.encrypt = function(input) {
   return result;
 };
 
-CiphersList.push(ZigZag);
-
+module.exports = ZigZag;

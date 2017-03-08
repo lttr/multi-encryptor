@@ -183,7 +183,9 @@
                 <form name="inputForm">
                   <textarea id="inputTextArea" rows="2"
                             aria-label="{{'inputText' | translate}}"
-                            ng-model="vm.input" required max-rows="7"
+                            ng-model="vm.input"
+                            ng-change="vm.inputTextChanged()"
+                            required max-rows="7"
                             md-maxlength="200" maxlength="200">
                   </textarea>
                 </form>
@@ -232,17 +234,6 @@
   </div> <!-- /Content -->
 
 </md-content>
-
-  <script src="js/vendor/angular.min.js"></script>
-  <script src="js/vendor/angular-messages.min.js"></script>
-  <script src="js/vendor/angular-animate.min.js"></script>
-  <script src="js/vendor/angular-aria.min.js"></script>
-  <script src="js/vendor/angular-material.min.js"></script>
-  <script src="js/vendor/angular-translate.min.js"></script>
-  <script src="js/vendor/angular-clipboard.min.js"></script>
-  <script src="js/vendor/angular-ui-router.min.js"></script>
-  <script src="js/vendor/v-accordion.min.js"></script>
-  <script src="js/vendor/string.min.js"></script>
-  <script src="js/app.js"></script>
+  <script src="js/bundle.js"></script>
 </body>
 </html>

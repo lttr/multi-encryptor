@@ -1,3 +1,6 @@
+var Categories = require('../categories');
+var Utils = require('../utils');
+
 var RemovePunctuation = function() {
   this.config = {};
 }
@@ -10,5 +13,5 @@ RemovePunctuation.prototype.encrypt = function(input) {
   return Utils.removePunctuation(input);
 };
 
-CiphersList.push(RemovePunctuation);
+module.exports = RemovePunctuation;
 

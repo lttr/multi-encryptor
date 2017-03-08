@@ -1,3 +1,6 @@
+var Categories = require('../categories');
+var Utils = require('../utils');
+
 var RemoveWhitespace = function() {
   this.config = {};
 }
@@ -10,5 +13,5 @@ RemoveWhitespace.prototype.encrypt = function(input) {
   return Utils.removeWhitespace(input);
 }
 
-CiphersList.push(RemoveWhitespace);
+module.exports = RemoveWhitespace;
 

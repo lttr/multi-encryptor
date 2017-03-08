@@ -1,3 +1,6 @@
+var Categories = require('../categories');
+var Utils = require('../utils');
+
 var Lowercase = function() {
   this.config = {};
 }
@@ -10,5 +13,5 @@ Lowercase.prototype.encrypt = function(input) {
   return Utils.lowercase(input);
 }
 
-CiphersList.push(Lowercase);
+module.export = Lowercase;
 

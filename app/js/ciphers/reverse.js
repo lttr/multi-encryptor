@@ -1,3 +1,6 @@
+var Categories = require('../categories');
+var Utils = require('../utils');
+
 var Reverse = function() {
   this.config = {};
 }
@@ -10,5 +13,5 @@ Reverse.prototype.encrypt = function(input) {
   return Utils.reverse(input);
 }
 
-CiphersList.push(Reverse);
+module.exports = Reverse;
 

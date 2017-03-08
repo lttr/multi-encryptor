@@ -1,3 +1,5 @@
+var Categories = require('../categories');
+
 var Nothing = function() {
   this.config = {};
 }
@@ -10,5 +12,5 @@ Nothing.prototype.encrypt = function(input) {
   return input;
 }
 
-CiphersList.push(Nothing);
+module.exports = Nothing;
 

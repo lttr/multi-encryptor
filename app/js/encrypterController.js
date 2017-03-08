@@ -1,40 +1,45 @@
-var EncrypterController = function(
+var Pipe = require('./pipe');
+var CipherList = require('./cipherList');
+var Categories = require('./categories');
+
+var ZigZag = require('./ciphers/zigZag')
+
+module.exports = function(
   $mdSidenav,
   $mdToast,
   $translate,
   $filter,
-  $state,
-  $stateParams,
   $scope,
-  $rootScope
+  $location
 ) {
 
-  this.input = $filter('translate')('defaultInputText');
+  var vm = this;
+  vm.input = $filter('translate')('defaultInputText');
 
-	this.ciphersList = CiphersList;
-	this.categories = getCategorizedCiphers();
+	vm.cipherList = CipherList();
+	vm.categories = getCategorizedCiphers();
 
   var defaultPipe = new Pipe(1, [new ZigZag()]);
-  this.pipes = [defaultPipe];
+  vm.pipes = [defaultPipe];
 
-  this.outputToCopy;
+  vm.outputToCopy;
 
-  this.changeLanguage = changeLanguage;
-  this.querySearch = querySearch;
-  this.createFilterFor = createFilterFor;
-  this.addPipe = addPipe;
-  this.removePipe = removePipe;
-  this.useCipher = useCipher;
-  this.getOutput = getOutput;
-  this.informOutputCopied = informOutputCopied;
-  this.openSettingsOnSide = openSettingsOnSide;
+  vm.changeLanguage = changeLanguage;
+  vm.querySearch = querySearch;
+  vm.createFilterFor = createFilterFor;
+  vm.addPipe = addPipe;
+  vm.removePipe = removePipe;
+  vm.useCipher = useCipher;
+  vm.getOutput = getOutput;
+  vm.informOutputCopied = informOutputCopied;
+  vm.openSettingsOnSide = openSettingsOnSide;
 
   function useCipher(Cipher) {
     var cipherInstance = new Cipher();
-    if (this.pipes.length == 0) {
-      this.pipes.push(new Pipe(1, [cipherInstance]));
+    if (vm.pipes.length == 0) {
+      vm.pipes.push(new Pipe(1, [cipherInstance]));
     } else {
-      this.pipes[0].addCipher(cipherInstance);
+      vm.pipes[0].addCipher(cipherInstance);
     }
   }
 
@@ -56,43 +61,35 @@ var EncrypterController = function(
       var oneCategory = {
         name: Categories[categoryKey]
       };
-      oneCategory.ciphers = CiphersList.filter(function(Cipher) {
-        return Categories[categoryKey] === Cipher.prototype.category;
+      oneCategory.ciphers = vm.cipherList.filter(function(Cipher) {
+        if (Cipher.prototype) {
+          return Categories[categoryKey] === Cipher.prototype.category;
+        } else {
+          return false;
+        }
       });
       categorizedCiphers.push(oneCategory);
     });
     return categorizedCiphers;
   }
 
-  $scope.$on('$stateChangeSuccess',
-    function rootStateChangeSuccess(event, toState, toParams, fromState, fromParams) {
-      if ($stateParams.lang !== undefined) {
-        var otherLang = $stateParams.lang === 'cs' ? 'en' : 'cs';
-        $rootScope.activeLang = $stateParams.lang;
-        $rootScope.otherLangURL =
-          $location.absUrl().replace('/' + $stateParams.lang, '/' + otherLang)
-        $translate.use($stateParams.lang);
-      }
-    }
-  );
-
   function changeLanguage(langKey) {
     $translate.use(langKey);
   }
 
   function addPipe() {
-    var number = this.pipes.length + 1;
+    var number = vm.pipes.length + 1;
     var pipe = new Pipe(number, []);
-    this.pipes.push(pipe);
+    vm.pipes.push(pipe);
   }
 
   function removePipe(pipe) {
-    var index = this.pipes.indexOf(pipe);
-    this.pipes.splice(index, 1);
+    var index = vm.pipes.indexOf(pipe);
+    vm.pipes.splice(index, 1);
   }
 
   function querySearch(query) {
-    var results = query ? this.ciphersList.filter(createFilterFor(query)) : [];
+    var results = query ? vm.cipherList.filter(createFilterFor(query)) : [];
     return results;
   }
 
@@ -106,7 +103,7 @@ var EncrypterController = function(
   }
 
   function getOutput(pipe) {
-    var thisInput = this.input;
+    var thisInput = vm.input;
     if (!thisInput) {
       thisInput = '';
     }
@@ -115,7 +112,7 @@ var EncrypterController = function(
         return cipher.encrypt(output);
     }, thisInput);
 
-    this.outputToCopy = result;
+    vm.outputToCopy = result;
     return result;
   };
 }

@@ -1,49 +1,41 @@
 'use strict';
 
-angular
-  .module('encrypter', [
-    'angular-clipboard',
-    'ngAnimate',
-    'ngMaterial',
-    'ngMessages',
-    'pascalprecht.translate',
-    'ui.router',
-    'vAccordion'
-  ])
-  .controller('EncrypterController', EncrypterController)
-  .config(function($mdThemingProvider) {
-    $mdThemingProvider
-      .theme('default')
-      .primaryPalette('brown')
-      .accentPalette('amber')
-      .warnPalette('deep-orange');
-  })
-  .config(function($translateProvider) {
-    $translateProvider
-      .translations('en', enLang)
-      .translations('cs', csLang)
-      .determinePreferredLanguage()
-      .useSanitizeValueStrategy('escape');
-  })
-  .config(function($stateProvider) {
-    $stateProvider.state('encrypter', {
-      abstract: true,
-      url: '/{locale}'
-    });
-  });
+var angular = require('angular');
 
+var encrypterController = require('./encrypterController');
+var languages = require('./languages');
 
-var Pipe = function(number, ciphers) {
-  this.number = number || 1;
-  this.chosenCiphers = ciphers;
-  this.searchText = null;
-  this.selectedCipher = null;
-  this.addCipher = function(cipher) {
-    this.chosenCiphers.push(cipher);
-  };
-  this.getNumber = function() {
-    return this.number;
-  };
-}
+require('angular-messages');
+require('angular-animate');
+require('angular-aria');
+require('angular-material');
+require('angular-translate');
+require('angular-clipboard');
+require('v-accordion');
 
-var CiphersList = [];
+var app = angular.module('encrypter', [
+  'angular-clipboard',
+  'ngAnimate',
+  'ngMaterial',
+  'ngMessages',
+  'pascalprecht.translate',
+  'vAccordion'
+]);
+
+app.controller('EncrypterController', encrypterController);
+
+app.config(function($mdThemingProvider) {
+  $mdThemingProvider
+    .theme('default')
+    .primaryPalette('brown')
+    .accentPalette('amber')
+    .warnPalette('deep-orange');
+});
+
+app.config(function($translateProvider) {
+  $translateProvider
+    .translations('en', languages.en)
+    .translations('cs', languages.cs)
+    .determinePreferredLanguage()
+    .useSanitizeValueStrategy('escape');
+});
