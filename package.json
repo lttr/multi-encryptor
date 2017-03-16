@@ -21,6 +21,7 @@
     "browser-sync": "latest",
     "browserify": "latest",
     "clean-css": "latest",
+    "mocha": "^3.2.0",
     "npm-run-all": "latest",
     "onchange": "latest",
     "shx": "latest",
@@ -47,6 +48,7 @@
     "watch:img": "onchange app/img -- npm run build:img",
     "watch:html": "onchange app/*.html -- npm run build:html",
     "watch": "run-p watch:css watch:js watch:img watch:html serve",
-    "start": "npm run build && npm run watch"
+    "start": "npm run build && npm run watch",
+    "test": "mocha --recursive"
   }
 }
