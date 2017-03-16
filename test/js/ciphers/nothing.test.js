@@ -1,8 +1,10 @@
-var nothing = require('../../../app/js/ciphers/nothing');
 var assert = require('assert');
-describe('NothingC', function() {
+var Nothing = require('../../../app/js/ciphers/nothing');
+
+describe('Nothing', function() {
   it('should return the same string', function() {
-    assert.equal("foo", nothing("foo"));
+    nothing = new Nothing();
+    assert.equal("foo", nothing.encrypt("foo"));
   });
 });
 
