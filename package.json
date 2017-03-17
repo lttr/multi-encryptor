@@ -20,13 +20,14 @@
   "devDependencies": {
     "browser-sync": "^2.18.8",
     "browserify": "^14.1.0",
-    "clean-css": "^4.0.9",
+    "clean-css-cli": "^4.0.9",
     "mocha": "^3.2.0",
     "npm-run-all": "^4.0.2",
     "onchange": "^3.2.1",
     "shx": "^0.2.2",
     "uglify-js": "^2.8.7",
-    "useref-file": "^0.2.1"
+    "useref-file": "^0.2.1",
+    "watchify": "^3.9.0"
   },
   "config": {
     "source": "app",
