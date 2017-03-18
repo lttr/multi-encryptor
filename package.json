@@ -50,6 +50,6 @@
     "watch:html": "onchange app/*.html -- npm run build:html",
     "watch": "run-p watch:css watch:js watch:img watch:html serve",
     "start": "npm run build && npm run watch",
-    "test": "mocha --recursive"
+    "test": "mocha -w --recursive"
   }
 }

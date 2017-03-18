@@ -1,15 +1,11 @@
 var assert = require('assert');
-var Nothing = require('../../../app/js/ciphers/nothing');
+var nothing = require('../../../app/js/ciphers/nothing');
 
-describe('Nothing', function() {
-  it('should return the same string', function() {
-    nothing = new Nothing();
-    assert.equal("foo", nothing.encrypt("foo"));
+describe('nothing', function() {
+  it('should work', function() {
+    var nothingCipher = new nothing();
+    var actual = nothingCipher.encrypt('foo');
+    var expected = 'foo';
+    assert.equal(actual, expected);
   });
 });
-
-
-
-
-
-
