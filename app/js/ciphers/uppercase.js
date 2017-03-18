@@ -13,4 +13,4 @@ Uppercase.prototype.encrypt = function(input) {
   return Utils.uppercase(input);
 }
 
-module.export = Uppercase;
+module.exports = Uppercase;

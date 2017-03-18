@@ -1,16 +1,16 @@
 
 module.exports = function() {
   return [
-    require('./ciphers/caesar.js'),
-    require('./ciphers/lowercase.js'),
-    require('./ciphers/morse.js'),
-    require('./ciphers/nothing.js'),
-    require('./ciphers/removeDiacritics.js'),
-    require('./ciphers/removePunctuation.js'),
-    require('./ciphers/removeWhitespace.js'),
-    require('./ciphers/reverse.js'),
-    require('./ciphers/uppercase.js'),
-    require('./ciphers/zigZag.js')
+    require('./ciphers/caesar'),
+    require('./ciphers/lowercase'),
+    require('./ciphers/morse'),
+    require('./ciphers/nothing'),
+    require('./ciphers/removeDiacritics'),
+    require('./ciphers/removePunctuation'),
+    require('./ciphers/removeWhitespace'),
+    require('./ciphers/reverse'),
+    require('./ciphers/uppercase'),
+    require('./ciphers/zigZag')
   ];
 }
 

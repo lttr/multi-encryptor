@@ -1,80 +1,90 @@
 var S = require('string');
 
-module.exports = {
+var Alphabet = [
+  'a', 'b', 'c', 'd', 'e',
+  'f', 'g', 'h', 'i', 'j',
+  'k', 'l', 'm', 'n', 'o',
+  'p', 'q', 'r', 's', 't',
+  'u', 'v', 'w', 'x', 'y',
+  'z'
+];
 
-  Alphabet: [
-    'a', 'b', 'c', 'd', 'e',
-    'f', 'g', 'h', 'i', 'j',
-    'k', 'l', 'm', 'n', 'o',
-    'p', 'q', 'r', 's', 't',
-    'u', 'v', 'w', 'x', 'y',
-    'z'
-  ],
-
-  adjacent: function(char, shift) {
-    var alphabet = [];
-    for (var i = 0, l = Utils.Alphabet.length; i < l; i++) {
-      if (Utils.isUpper(char)) {
-        alphabet[i] = Utils.Alphabet[i].toUpperCase();
-      } else {
-        alphabet[i] = Utils.Alphabet[i];
-      }
-    }
-    if (shift === 0) {
-      return char;
-    }
-    var index = alphabet.indexOf(char);
-    var newIndex;
-    if (index > -1) {
-      if (shift < 0) {
-        newIndex = index + shift;
-        if (newIndex <= 0) {
-          newIndex = (alphabet.length - 1) + newIndex;
-        }
-      } else { // shift > 0
-        newIndex = (index + shift) % (alphabet.length - 1);
-      }
+var adjacent = function(char, shift) {
+  var alphabet = [];
+  for (var i = 0, l = Alphabet.length; i < l; i++) {
+    if (isUpper(char)) {
+      alphabet[i] = Alphabet[i].toUpperCase();
     } else {
-      return '?';
+      alphabet[i] = Alphabet[i];
     }
-    return alphabet[newIndex];
-  },
+  }
+  if (shift === 0) {
+    return char;
+  }
+  var index = alphabet.indexOf(char);
+  var newIndex;
+  if (index > -1) {
+    if (shift < 0) {
+      newIndex = index + shift;
+      if (newIndex <= 0) {
+        newIndex = (alphabet.length - 1) + newIndex;
+      }
+    } else { // shift > 0
+      newIndex = (index + shift) % (alphabet.length - 1);
+    }
+  } else {
+    return '?';
+  }
+  return alphabet[newIndex];
+}
 
-  isLower: function(char) {
-    return S(char).latinise().isLower();
-  },
+var isLower = function(char) {
+  return S(char).latinise().isLower();
+}
 
-  isUpper: function(char) {
-    return S(char).latinise().isUpper();
-  },
+var isUpper = function(char) {
+  return S(char).latinise().isUpper();
+}
 
-  lowercase: function(input) {
-    return input.toLocaleLowerCase();
-  },
+var lowercase = function(input) {
+  return input.toLocaleLowerCase();
+}
 
-  normalizeWhitespace: function(input) {
-    return input.replace(/\s+/g,' ');
-  },
+var normalizeWhitespace = function(input) {
+  return input.replace(/\s+/g,' ');
+}
 
-  removeDiacritics: function(input) {
-    return S(input).latinise().s;
-  },
+var removeDiacritics = function(input) {
+  return S(input).latinise().s;
+}
 
-  removeWhitespace: function(input) {
-    return input.replace(/\s*/g,'');
-  },
+var removeWhitespace = function(input) {
+  return input.replace(/\s*/g,'');
+}
 
-  removePunctuation: function(input) {
-    return S(input).latinise().stripPunctuation().s;
-  },
+var removePunctuation = function(input) {
+  return S(input).stripPunctuation().s;
+}
 
-  reverse: function(input) {
-    return input.split('').reverse().join('');
-  },
+var reverse = function(input) {
+  return input.split('').reverse().join('');
+}
 
-  uppercase: function(input) {
-    return input.toLocaleUpperCase();
-  },
+var uppercase = function(input) {
+  return input.toLocaleUpperCase();
+}
 
-};
+module.exports = {
+  Alphabet: Alphabet,
+  adjacent: adjacent,
+  isLower: isLower,
+  isUpper: isUpper,
+  lowercase: lowercase,
+  normalizeWhitespace: normalizeWhitespace,
+  removeDiacritics: removeDiacritics,
+  removeWhitespace: removeWhitespace,
+  removePunctuation: removePunctuation,
+  reverse: reverse,
+  uppercase: uppercase
+}
 
