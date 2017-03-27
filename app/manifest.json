@@ -1,0 +1,12 @@
+{
+  "name": "Mencryptor",
+  "short_name": "Mencryptor",
+  "icons": [{
+    "src": "img/multi-encryptor.svg",
+    "type": "image/svg"
+  }],
+  "start_url": "/index.html",
+  "display": "standalone",
+  "background_color": "#3E2723",
+  "theme_color": "#3E2723"
+}
