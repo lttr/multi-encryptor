@@ -1,0 +1,237 @@
+<!DOCTYPE html>
+<html lang="en" ng-app="encrypter">
+<head>
+  <meta charset="utf-8">
+  <meta name="description" content="Interactive tool for creating simple ciphers.">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>{{'multiEncryptor' | translate}}</title>
+  <link rel="stylesheet" href="css/vendor/angular-material.min.css">
+  <link rel="stylesheet" href="css/vendor/v-accordion.min.css">
+  <link rel="stylesheet" href="css/vendor/material-icons.css">
+  <link rel="stylesheet" href="css/style.min.css">
+  <link rel="manifest" href="manifest.json">
+</head>
+
+<body ng-controller="EncrypterController as vm" ng-cloak layout="column">
+
+<md-content>
+
+  <!-- Header -->
+  <md-toolbar layout="row" layout-align="space-between center"
+              id="top-toolbar">
+    <span>
+      <md-icon md-svg-src="img/multi-encryptor.svg"
+               id="logo" aria-label="encryptor icon">
+      </md-icon>
+    </span>
+    <h1 class="md-display-1">
+      {{'multiEncryptor' | translate}}
+    </h1>
+    <span id="top-placeholder"/>
+    <md-fab-speed-dial md-direction="down" md-open="false" class="md-scale"
+                       id="language-button">
+      <md-fab-trigger>
+        <md-button class="md-icon-button"
+                   md-aria-label="{{'changeLanguage' | translate}}"
+                   title="{{'changeLanguage' | translate}}">
+          <md-icon class="material-icons">language</md-icon>
+        </md-button>
+      </md-fab-trigger>
+      <md-fab-actions>
+        <md-button class="md-fab md-primary md-mini"
+                   ui-sref="cs" ui-sref-active="active"
+                   ng-click="vm.changeLanguage('cs')">
+          cs
+        </md-button>
+        <md-button class="md-fab md-primary md-mini"
+                   ui-sref="en" ui-sref-active="active"
+                   ng-click="vm.changeLanguage('en')">
+          en
+        </md-button>
+      </md-fab-actions>
+    </md-fab-speed-dial>
+  </md-toolbar> <!-- /Header -->
+
+  <!-- Content -->
+  <div id="content" layout="row" flex>
+
+    <md-sidenav id="settings" class="md-whiteframe-4dp"
+                md-component-id="settingsOnSide">
+      <md-subheader>Settings</md-subheader>
+    </md-sidenav>
+
+    <!-- Ciphers wrapper -->
+    <div id="ciphers-wrapper" flex layout="column">
+
+      <!-- Available ciphers -->
+      <section id="available-ciphers" class="flexContent"
+                layout="row" layout-align="center">
+        <div flex="95" flex-gt-sm="70" flex-gt-lg="50">
+          <h3>{{'availableCiphers' | translate}}</h3>
+          <v-accordion multiple class="accordion">
+            <v-pane expanded="true" ng-repeat="category in vm.categories">
+              <v-pane-header class="accordion-header">
+                <md-button class="button-chip">
+                  <md-icon ng-if="$pane.isExpanded()"
+                    class="material-icons">keyboard_arrow_down</md-icon>
+                  <md-icon ng-if="!$pane.isExpanded()"
+                    class="material-icons">keyboard_arrow_right</md-icon>
+                </md-button>
+                {{category.name | translate}}
+              </v-pane-header>
+              <v-pane-content class="accordion-content">
+                <md-chips ng-model="category.ciphers" readonly="true">
+                  <md-chip-template>
+                    <span title="{{$chip.prototype.description | translate}}">
+                      {{$chip.prototype.name | translate}}
+                    </span>
+                    <md-button class="button-chip"
+                               md-colors="::{color: 'default-accent-700'}"
+                               ng-click="vm.useCipher($chip)"
+                               aria-label="{{'useCipher' | translate}}"
+                               title="{{'useCipher' | translate}}">
+                      <md-icon class="material-icons">get_app</md-icon>
+                    </md-button>
+                  </md-chip-template>
+                </md-chips>
+              </v-pane-content>
+            </v-pane>
+          </v-accordion>
+        </div>
+      </section><!-- /Available ciphers -->
+
+      <!-- Chosen ciphers -->
+      <section id="chosen-ciphers" class="flexContent"
+                layout="row" layout-align="center">
+        <div flex="95" flex-gt-sm="70" flex-gt-lg="50">
+          <h3>{{'chosenCiphers' | translate}}</h3>
+          <md-content class="show-hide" ng-repeat="pipe in vm.pipes">
+            <md-card class="pipe-card">
+              <md-card-header layout="row">
+                <md-card-header-text>
+                <span class="md-title">
+                  {{'pipe' | translate}} {{pipe.getNumber()}}
+                </span>
+                </md-card-header-text>
+                <md-card-actions>
+                  <md-card-icon-actions class="card-action-buttons">
+                    <md-button class="md-icon-button md-primary"
+                              ng-click="vm.removePipe(pipe)"
+                              aria-label="{{'removePipe' | translate}}"
+                              title="{{'removePipe' | translate}}">
+                      <md-icon class="material-icons">delete</md-icon>
+                    </md-button>
+                  </md-card-icon-actions>
+                </md-card-actions>
+              </md-card-header>
+              <md-card-content>
+                <md-chips layout-fill
+                          ng-model="pipe.chosenCiphers"
+                          md-autocomplete-snap
+                          md-require-match="true"
+                          md-max-chips="5"
+                          md-removable="false">
+                  <md-autocomplete
+                          md-selected-item="pipe.selectedCipher"
+                          md-search-text="pipe.searchText"
+                          md-items="cipher in vm.querySearch(pipe.searchText)"
+                          md-item-text="cipher.prototype.name | translate"
+                          md-autoselect="true"
+                          placeholder="{{'infoWriteCipherName' | translate}}" >
+                          <span md-highlight-text="pipe.searchText">
+                            {{cipher.prototype.name | translate}}
+                          </span>
+                  </md-autocomplete>
+                  <md-chip-template>
+                    {{$chip.name | translate}}
+                    <button ng-if="$chip.config.enabled"
+                            class="button-chip"
+                            ng-click="vm.openSettingsOnSide()"
+                            md-colors="::{color: 'default-accent-700'}">
+                      <md-icon class="material-icons">settings</md-icon>
+                    </button>
+                    <button class="button-chip" md-chip-remove
+                            md-colors="::{color: 'default-warn'}">
+                      <md-icon class="material-icons">close</md-icon>
+                    </button>
+                  </md-chip-template>
+                </md-chips>
+              </md-card-content>
+            </md-card>
+          </md-content>
+          <div class="right-button-wrapper">
+            <md-button class="md-fab md-primary md-mini" ng-click="vm.addPipe()"
+                        aria-label="{{'addPipe' | translate}}"
+                        title="{{'addPipe' | translate}}">
+              <md-icon class="material-icons">add</md-icon>
+            </md-button>
+          </div>
+        </div>
+      </section><!-- /Chosen ciphers -->
+
+      <!-- Input text -->
+      <section id="input-text-wrapper" class="flexContent"
+                layout="row" layout-align="center">
+        <div flex="95" flex-gt-sm="70" flex-gt-lg="50">
+          <h3>{{'inputText' | translate}}</h3>
+          <md-card>
+            <md-card-content>
+              <md-input-container layout-fill>
+                <form name="inputForm">
+                  <textarea id="inputTextArea" rows="2"
+                            aria-label="{{'inputText' | translate}}"
+                            ng-model="vm.input"
+                            ng-change="vm.inputTextChanged()"
+                            required max-rows="7"
+                            md-maxlength="200" maxlength="200">
+                  </textarea>
+                </form>
+              </md-input-container>
+            </md-card-content>
+          </md-card>
+        </div>
+      </section><!-- /Input text -->
+
+      <!-- Outputs -->
+      <section id="outputs" class="flexContent" layout="row" layout-align="center">
+        <div flex="95" flex-gt-sm="70" flex-gt-lg="50"
+             class="outputs-wrapper">
+          <h3>{{'outputs' | translate}}</h3>
+          <md-content class="pipe-card show-hide" ng-repeat="pipe in vm.pipes">
+            <md-card>
+              <md-card-header>
+                <md-card-header-text>
+                <span class="md-title">
+                  {{'pipe' | translate}} {{pipe.getNumber()}}
+                </span>
+                </md-card-header-text>
+                <md-card-actions>
+                  <md-card-icon-actions class="card-action-buttons">
+                    <md-button class="md-icon-button md-primary"
+                              clipboard
+                              text="vm.getOutput(pipe)"
+                              on-copied="vm.informOutputCopied()"
+                              aria-label="{{'copyOutput' | translate}}"
+                              title="{{'copyOutput' | translate}}">
+                      <md-icon class="material-icons">content_copy</md-icon>
+                    </md-button>
+                  </md-card-icon-actions>
+                </md-card-actions>
+              </md-card-header>
+              <md-card-content>
+                <pre class="output">{{vm.getOutput(pipe)}}</pre>
+              </md-card-content>
+            </md-card>
+          </md-content>
+        </div>
+      </section> <!-- /Outputs -->
+
+    </div> <!-- /Ciphers wrapper -->
+
+  </div> <!-- /Content -->
+
+</md-content>
+  <script src="js/bundle.js"></script>
+</body>
+</html>
